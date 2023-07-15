@@ -2,10 +2,11 @@ create or replace function trigf1() returns trigger as $$
 	declare diff integer; --votes difference to add 
 	
 	begin
-		diff = new.votes - old.votes;
+		diff = new.nofvotes - old.nofvotes;
 		update running
 		set totalvotes = totalvotes + diff
 		where pname = new.pname;
+		return null;
 	end;
 $$ language plpgsql;
 

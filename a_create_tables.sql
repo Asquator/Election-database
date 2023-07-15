@@ -9,8 +9,8 @@ create table party(
 );
 
 create table running(
-	edate date,
 	pname char(20),
+	edate date,
 	chid numeric(5,0),
 	totalvotes integer default 0,
 
@@ -35,6 +35,5 @@ create table votes(
 
 	primary key(cid, pname, edate),
 	foreign key(cid) references city,
-	foreign key(pname) references party,
-	foreign key(edate) references election
+	foreign key(pname, edate) references running(pname, edate)
 );

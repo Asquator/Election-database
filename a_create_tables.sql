@@ -12,7 +12,7 @@ create table running(
 	edate date,
 	pname char(20),
 	chid numeric(5,0),
-	totalvotes integer,
+	totalvotes integer default 0,
 
 	primary key(edate, pname),
 	foreign key(edate) references election, 
@@ -31,13 +31,10 @@ create table votes(
 	cid numeric(5,0),
 	pname char(20),
 	edate date,
-	nofvotes integer not null,
+	nofvotes integer not null check(nofvotes > 0),
 
 	primary key(cid, pname, edate),
 	foreign key(cid) references city,
 	foreign key(pname) references party,
 	foreign key(edate) references election
 );
-
-
-

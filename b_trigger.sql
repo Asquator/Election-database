@@ -1,15 +1,25 @@
 create or replace function trigf1() returns trigger as $$
-	declare diff integer; --votes difference to add 
-	
-	begin
+declare 
+	diff integer;
+
+begin
+	if TG_OP = 'INSERT'
+		then diff = new.nofvotes;
+		
+	elsif TG_OP = 'UPDATE' then
 		diff = new.nofvotes - old.nofvotes;
-		update running
-		set totalvotes = totalvotes + diff
-		where pname = new.pname;
-		return null;
-	end;
+			
+	end if;
+		
+	update running
+	set totalvotes = totalvotes + diff
+	where running.pname = new.pname and 
+		running.edate = new.edate;
+		
+	return null;
+end;
 $$ language plpgsql;
 
-create or replace trigger T1 
+create or replace trigger T1
 after update or insert on votes
 for each row execute procedure trigf1();
